@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان Fundamental of Computer Science - النهائي</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --primary-red: #ff0000;
+            --glow-red: 0 0 10px #ff0000, 0 0 20px #ff0000;
+            --bg-dark: #050505;
+            --card-bg: #1a0505;
+            --text-color: #ffffff;
+            --correct-green: #00ff00;
+            --glow-green: 0 0 10px #00ff00, 0 0 20px #00ff00;
+            --wrong: #ff0000;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            font-family: 'Cairo', 'Roboto', sans-serif;
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        /* ✨ Dedication Style */
+        .dedication-banner {
+            text-align: center;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, rgba(255,0,0,0.3), rgba(139,0,0,0.2));
+            border-bottom: 2px solid var(--primary-red);
+            box-shadow: 0 5px 25px rgba(255, 0, 0, 0.4);
+            margin-bottom: 10px;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255,0,0,0.3); }
+            50% { box-shadow: 0 0 30px rgba(255,0,0,0.6); }
+        }
+
+        .dedication-text {
+            font-size: 1.3rem;
+            color: #fff;
+            margin: 5px 0;
+        }
+
+        .dedication-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-red);
+            text-shadow: var(--glow-red);
+            margin: 10px 0;
+            display: block;
+        }
+
+        .dedication-en {
+            font-size: 1.1rem;
+            color: #ffcccc;
+            font-style: italic;
+        }
+
+        .heart {
+            color: var(--primary-red);
+            animation: heartbeat 1.5s infinite;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, rgba(255,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+            border-bottom: 2px solid var(--primary-red);
+            box-shadow: 0 5px 20px rgba(255, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-red);
+            text-shadow: var(--glow-red);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        h2 { font-size: 1.2rem; color: #ffcccc; margin-bottom: 20px; }
+
+        .credits {
+            font-size: 1rem;
+            color: var(--primary-red);
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--primary-red);
+            border: 1px solid var(--primary-red);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border: 1px solid #330000;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .question-card:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #fff;
+            border-right: 4px solid var(--primary-red);
+            padding-right: 15px;
+        }
+
+        .question-text span {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: normal;
+            color: #aaa;
+            margin-top: 5px;
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+
+        @media (min-width: 600px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+
+        .option-label {
+            display: block;
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #444;
+            position: relative;
+        }
+
+        .option-label:hover { background: #330000; border-color: var(--primary-red); }
+
+        /* ✅ Correct Answer Style - GREEN & GLOWING */
+        .option-label.correct-answer {
+            border: 2px solid var(--correct-green) !important;
+            background: rgba(0, 255, 0, 0.15) !important;
+            box-shadow: var(--glow-green) !important;
+            color: var(--correct-green) !important;
+            font-weight: bold !important;
+        }
+
+        .option-label.correct-answer::after {
+            content: " ✓";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: var(--correct-green);
+            text-shadow: var(--glow-green);
+        }
+
+        input[type="radio"] { display: none; }
+
+        input[type="radio"]:checked + .option-label {
+            background: #500000;
+            border-color: var(--primary-red);
+            box-shadow: 0 0 10px var(--primary-red);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 40px auto;
+            padding: 15px 30px;
+            background: transparent;
+            color: var(--primary-red);
+            border: 2px solid var(--primary-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            border-radius: 50px;
+            box-shadow: 0 0 15px var(--primary-red);
+            transition: all 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-red);
+            color: #000;
+            box-shadow: 0 0 30px var(--primary-red);
+        }
+
+        #scoreModal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .score-content {
+            text-align: center;
+            border: 2px solid var(--primary-red);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px var(--primary-red);
+            background: #111;
+            max-width: 90%;
+        }
+
+        .score-number {
+            font-size: 5rem;
+            color: var(--primary-red);
+            text-shadow: var(--glow-red);
+            font-weight: bold;
+        }
+
+        .close-modal {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+
+        .close-modal:hover { background: var(--primary-red); }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid #333;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .copyright { color: var(--primary-red); font-weight: bold; }
+
+        .progress-container {
+            position: sticky; top: 0;
+            background: #000; z-index: 100;
+            padding: 10px 0; border-bottom: 1px solid #333;
+        }
+
+        .progress-bar {
+            height: 5px; background: #333;
+            width: 100%; border-radius: 5px; overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%; background: var(--primary-red);
+            width: 0%; box-shadow: 0 0 10px var(--primary-red);
+            transition: width 0.3s;
+        }
+
+        .answer-key-toggle {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            color: var(--correct-green);
+            border: 2px solid var(--correct-green);
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: var(--glow-green);
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background: var(--correct-green);
+            color: #000;
+        }
+
+        .toggle-btn.hide {
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+            box-shadow: var(--glow-red);
+        }
+
+        .toggle-btn.hide:hover {
+            background: var(--primary-red);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- ✨ Special Dedication Banner -->
+    <div class="dedication-banner">
+        <div class="dedication-text">
+            <span class="heart">♥</span>
+            إهداء خاص إلى المهندسة الرائعة
+            <span class="heart">♥</span>
+        </div>
+        <span class="dedication-name">بنين رعد كاظم</span>
+        <div class="dedication-en">
+            Dedicated to the Brilliant Engineer: Banin Raad Kadhim 💐
+        </div>
+        <div style="margin-top: 8px; font-size: 0.9rem; color: #ff9999;">
+            مع أطيب التمنيات بالنجاح والتوفيق دائماً 🌹
+        </div>
+    </div>
+
+    <header>
+        <h1>Final Interactive Exam</h1>
+        <h2>Fundamental of Computer Science</h2>
+        <div class="credits">
+            تمت البرمجة بواسطة: علي عدنان كاظم<br>
+            Programmed by: Ali Adnan Kadhim
+        </div>
+        <div style="margin-top: 10px; color: #ff6666;">2026 © All Rights Reserved</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; color: #aaa; font-size: 0.9rem; margin-bottom: 5px;">
+                <span>Progress</span>
+                <span id="progressText">0/100</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="answer-key-toggle">
+            <button class="toggle-btn" id="toggleAnswers" onclick="toggleAnswers()">
+                ✓ إظهار/إخفاء الإجابات | Show/Hide Answers
+            </button>
+        </div>
+    </div>
+
+    <div class="container" id="quizContainer">
+        <!-- Questions will be injected here by JS -->
+    </div>
+
+    <button class="submit-btn" onclick="calculateScore()">Submit Exam | تسليم الامتحان</button>
+
+    <footer>
+        <p class="copyright">© 2026 University Of Manara - College of Engineering</p>
+        <p>Department of Cyber Security Engineering</p>
+        <p style="color: #444; font-size: 0.8rem; margin-top: 10px;">Interactive Exam System v3.0</p>
+    </footer>
+
+    <!-- Score Modal -->
+    <div id="scoreModal">
+        <div class="score-content">
+            <h2 style="color: #fff; margin-bottom: 20px;">Exam Result | نتيجة الامتحان</h2>
+            <div class="score-number" id="finalScore">0</div>
+            <h3 id="scoreMessage" style="color: #fff; margin: 20px 0;"></h3>
+            <button class="close-modal" onclick="closeModal()">مراجعة الإجابات | Review</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "ما هو الحاسوب؟ | What is a Computer?", options: ["جهاز إلكتروني متقدم يعالج البيانات | An advanced electronic device that processes data", "آلة كاتبة رقمية | A digital typewriter", "جهاز تخزين فقط | A storage device only", "شاشة عرض | A display screen only"], answer: 0 },
+            { q: "ما هي الوظائف الأربع الأساسية للحاسوب؟ | What are the four basic functions of a computer?", options: ["Input, Process, Output, Storage", "Type, Print, Save, Delete", "Read, Write, Copy, Paste", "Open, Close, Minimize, Maximize"], answer: 0 },
+            { q: "البيانات الخام المدخلة للحاسوب تسمى | Raw data entered into a computer is called:", options: ["Output", "Process", "Input", "Storage"], answer: 2 },
+            { q: "معادلة نظام الحاسوب الصحيحة هي | The correct computer system equation is:", options: ["COMPUTER = Hardware + Software + User", "COMPUTER = CPU + Monitor", "COMPUTER = Input + Output", "COMPUTER = RAM + ROM"], answer: 0 },
+            { q: "الأجهزة الملموسة في الحاسوب تسمى | The physical parts of a computer are called:", options: ["Software", "Hardware", "Firmware", "Malware"], answer: 1 },
+            { q: "البرامج تعطي 'ذكاء' للحاسوب | Software gives '______' to the computer:", options: ["Power", "Intelligence", "Speed", "Memory"], answer: 1 },
+            { q: "أي مما يلي ليس جهاز إدخال؟ | Which is NOT an input device?", options: ["Keyboard", "Mouse", "Printer", "Scanner"], answer: 2 },
+            { q: "الجهاز المسؤول عن تنفيذ التعليمات في الحاسوب هو | The device that interprets and executes instructions is:", options: ["RAM", "CPU", "ROM", "Hard Disk"], answer: 1 },
+            { q: "CPU تعني | CPU stands for:", options: ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Control Processing Unit"], answer: 0 },
+            { q: "أي مما يلي يعمل كجهاز إدخال وإخراج معاً؟ | Which works as both input and output device?", options: ["Keyboard", "Monitor (Touchscreen)", "Printer", "Mouse"], answer: 1 },
+            { q: "الذاكرة الرئيسية (RAM) هي | Primary memory (RAM) is:", options: ["قراءة فقط | Read-only", "قراءة/كتابة | Read/Write", "تخزين دائم | Permanent storage", "غير قابلة للتعديل | Non-editable"], answer: 1 },
+            { q: "ROM تعني | ROM stands for:", options: ["Random Only Memory", "Read-Only Memory", "Read-Operational Memory", "Random Operational Memory"], answer: 1 },
+            { q: "أي مما يلي يعتبر ذاكرة ثانوية؟ | Which is secondary storage?", options: ["RAM", "Cache", "Hard Disk", "Register"], answer: 2 },
+            { q: "وحدة قياس دقة الطابعة هي | Printer resolution is measured in:", options: ["Hz", "DPI (Dots Per Inch)", "MB", "GHz"], answer: 1 },
+            { q: "1 ميجابايت يساوي | 1 MB equals:", options: ["1000 bytes", "1024 KB", "1 billion bytes", "100 KB"], answer: 1 },
+            { q: "الحاسوب الذي يمثل البيانات بأرقام ثنائية هو | Computer using binary digits is:", options: ["Analog Computer", "Digital Computer", "Hybrid Computer", "Quantum Computer"], answer: 1 },
+            { q: "مقياس سرعة المعالج هو | Processor speed is measured in:", options: ["Volts", "Hertz (Hz/MHz/GHz)", "Bytes", "Pixels"], answer: 1 },
+            { q: "المنفذ في الحاسوب يستخدم لـ | A computer port is used to:", options: ["شحن البطارية فقط | Charge battery only", "التواصل مع الأجهزة الطرفية | Communicate with peripherals", "زيادة سرعة الإنترنت | Increase internet speed", "تحسين جودة الصوت | Improve audio quality"], answer: 1 },
+            { q: "نظام التشغيل يعتبر من | Operating System is:", options: ["Application Software", "System Software", "Utility Software", "Programming Language"], answer: 1 },
+            { q: "أي مما يلي ليس نظام تشغيل؟ | Which is NOT an operating system?", options: ["Windows", "Linux", "MS Office", "macOS"], answer: 2 },
+            { q: "البرامج المصممة لمهام محددة تسمى | Software for specific tasks is called:", options: ["System Software", "Application Software", "Firmware", "Driver"], answer: 1 },
+            { q: "MS Word يعتبر من | MS Word is:", options: ["Operating System", "Application Software", "Utility Software", "Programming Tool"], answer: 1 },
+            { q: "لغة التجميع تسمى | Assembly language is:", options: ["High-Level Language", "Low-Level Language", "Machine Language", "Natural Language"], answer: 1 },
+            { q: "المترجم (Compiler) يحول | A compiler converts:", options: ["Machine to Assembly", "High-Level to Machine Language", "English to Arabic", "Binary to Decimal"], answer: 1 },
+            { q: "FORTRAN و COBOL هما | FORTRAN and COBOL are:", options: ["Operating Systems", "High-Level Languages", "Hardware Components", "Input Devices"], answer: 1 },
+            { q: "برنامج مكافحة الفيروسات يعتبر | Anti-virus program is:", options: ["Application Software", "Utility Software", "System Software", "Programming Language"], answer: 1 },
+            { q: "لغة الآلة تُنفذ مباشرة بواسطة | Machine language is executed directly by:", options: ["RAM", "CPU", "Hard Disk", "Monitor"], answer: 1 },
+            { q: "لغة عالية المستوى تتميز بـ | High-level language is characterized by:", options: ["صعوبة الفهم | Being hard to understand", "كونها قريبة من اللغة الطبيعية | Being close to natural language", "التنفيذ المباشر | Direct execution", "استخدام الأرقام الثنائية فقط | Using only binary"], answer: 1 },
+            { q: "برنامج مخصص مثل SAGE للمحاسبة هو | Custom software like SAGE for accounting is:", options: ["Package Software", "Tailored/Custom Software", "System Software", "Open Source"], answer: 1 },
+            { q: "Windows Explorer يستخدم لـ | Windows Explorer is used for:", options: ["تصفح الإنترنت | Web browsing", "إدارة الملفات والمجلدات | File/Folder management", "تحرير الصور | Photo editing", "تشغيل الألعاب | Gaming"], answer: 1 },
+            { q: "لغة Python تعتبر | Python language is:", options: ["Low-Level", "High-Level", "Machine", "Assembly"], answer: 1 },
+            { q: "الماسح الضوئي (Assembler) يحول | An assembler converts:", options: ["High-Level to Machine", "Assembly to Machine Language", "English to Code", "Binary to Text"], answer: 1 },
+            { q: "BASIC تعني | BASIC stands for:", options: ["Basic Application System Interface Code", "Beginner's All-purpose Symbolic Instruction Code", "Binary Advanced System Integrated Code", "Business Application Standard Integrated Code"], answer: 1 },
+            { q: "برنامج WinRAR يعتبر من | WinRAR is:", options: ["Operating System", "Utility Software", "Hardware Driver", "Web Browser"], answer: 1 },
+            { q: "أي مما يلي لغة برمجة؟ | Which is a programming language?", options: ["Windows", "C++", "Photoshop", "Excel"], answer: 1 },
+            { q: "البرامج التي تأتي مع نظام التشغيل تسمى | Software bundled with OS is called:", options: ["Third-party Software", "Built-in/Utility Software", "Malware", "Firmware"], answer: 1 },
+            { q: "لغة SQL تستخدم لـ | SQL language is used for:", options: ["تصميم الويب | Web design", "إدارة قواعد البيانات | Database management", "معالجة النصوص | Word processing", "الرسوم المتحركة | Animation"], answer: 1 },
+            { q: "البرنامج الذي يدير موارد الحاسوب هو | Software that manages computer resources is:", options: ["Application", "Operating System", "Utility", "Driver"], answer: 1 },
+            { q: "Linux يعتبر | Linux is:", options: ["Application Software", "Open-Source Operating System", "Hardware Component", "Programming Language"], answer: 1 },
+            { q: "برنامج Adobe Photoshop هو | Adobe Photoshop is:", options: ["System Software", "Application Software (Graphics)", "Utility Software", "Operating System"], answer: 1 },
+            { q: "أسرع نوع من الحواسيب هو | The fastest type of computer is:", options: ["Mainframe", "Supercomputer", "Minicomputer", "Microcomputer"], answer: 1 },
+            { q: "الحاسوب العملاق يستخدم في | Supercomputers are used for:", options: ["الألعاب فقط | Gaming only", "التنبؤ بالطقس والأبحاث العلمية | Weather forecasting & scientific research", "معالجة النصوص | Word processing", "تصفح الإنترنت | Web browsing"], answer: 1 },
+            { q: "الحاسوب الرئيسي (Mainframe) يتميز بـ | Mainframe computers are characterized by:", options: ["دعم مستخدم واحد | Supporting one user", "دعم مئات المستخدمين одновременно | Supporting hundreds of users simultaneously", "الحجم الصغير | Small size", "السعر المنخفض | Low cost"], answer: 1 },
+            { q: "الحاسوب الصغير (Minicomputer) يدعم | Minicomputers support:", options: ["1 مستخدم | 1 user", "4-200 مستخدم | 4-200 users", "1000+ مستخدم | 1000+ users", "لا يدعم المستخدمين | No user support"], answer: 1 },
+            { q: "الحاسوب الشخصي (Microcomputer) يشمل | Microcomputers include:", options: ["Supercomputers only", "Desktop, Laptop, Palmtop", "Mainframes only", "Servers only"], answer: 1 },
+            { q: "الكمبيوتر المحمول يسمى | Portable computer with integrated screen is:", options: ["Desktop", "Laptop", "Server", "Workstation"], answer: 1 },
+            { q: "PDA تعني | PDA stands for:", options: ["Personal Digital Assistant", "Public Data Access", "Private Digital Archive", "Portable Device Adapter"], answer: 0 },
+            { q: "محطة العمل (Workstation) هي | A workstation is:", options: ["حاسوب للألعاب | Gaming computer", "حاسوب مستخدم في شبكة | User's machine in a network", "خادم رئيسي | Main server", "جهاز إدخال | Input device"], answer: 1 },
+            { q: "الحاسوب التناظري يعالج | Analog computers process:", options: ["أرقام ثنائية فقط | Binary digits only", "كميات فيزيائية مستمرة | Continuous physical quantities", "نصوص فقط | Text only", "صور فقط | Images only"], answer: 1 },
+            { q: "مقياس السرعة (Speedometer) مثال على | A speedometer is an example of:", options: ["Digital Computer", "Analog Computer", "Supercomputer", "Mainframe"], answer: 1 },
+            { q: "لإنشاء مستند جديد في Word نستخدم | To create new document in Word use:", options: ["Ctrl+O", "Ctrl+N", "Ctrl+S", "Ctrl+P"], answer: 1 },
+            { q: "اختصار نسخ النص هو | Shortcut to copy text is:", options: ["Ctrl+X", "Ctrl+V", "Ctrl+C", "Ctrl+Z"], answer: 2 },
+            { q: "اختصار التراجع (Undo) هو | Undo shortcut is:", options: ["Ctrl+Y", "Ctrl+Z", "Ctrl+U", "Ctrl+D"], answer: 1 },
+            { q: "لتغيير محاذاة النص نستخدم | To change text alignment use:", options: ["Font tab", "Paragraph formatting", "Insert menu", "Review tab"], answer: 1 },
+            { q: "قاعدة 6x6 في العروض التقديمية تعني | 6x6 rule in presentations means:", options: ["6 صور و6 نصوص | 6 images & 6 texts", "حد أقصى 6 أسطر لكل شريحة | Max 6 lines per slide", "6 ألوان و6 خطوط | 6 colors & 6 fonts", "6 دقائق و6 شرائح | 6 minutes & 6 slides"], answer: 1 },
+            { q: "في Excel، كل صيغة تبدأ بـ | In Excel, every formula starts with:", options: ["+", "#", "=", "@"], answer: 2 },
+            { q: "دالة SUM في Excel تستخدم لـ | SUM function in Excel is used for:", options: ["المتوسط | Average", "الجمع | Addition", "الطرح | Subtraction", "الشرط | Condition"], answer: 1 },
+            { q: "الصيغة الصحيحة لمتوسط الخلايا A1:A10 هي | Correct formula for average of A1:A10:", options: ["=ADD(A1:A10)", "=MEAN(A1:A10)", "=AVERAGE(A1:A10)", "=TOTAL(A1:A10)"], answer: 2 },
+            { q: "دالة IF في Excel تعيد | IF function in Excel returns:", options: ["قيمة واحدة فقط | One value only", "قيمة بناءً على شرط | Value based on condition", "مجموع القيم | Sum of values", "نص عشوائي | Random text"], answer: 1 },
+            { q: "لإنشاء مخطط في Excel نذهب إلى | To create chart in Excel go to:", options: ["Home tab", "Insert tab", "Data tab", "Review tab"], answer: 1 },
+            { q: "Pivot Tables في Excel تستخدم لـ | Pivot Tables in Excel are used for:", options: ["تنسيق النصوص | Text formatting", "تحليل وتلخيص البيانات الكبيرة | Analyzing & summarizing large datasets", "طباعة المستندات | Printing documents", "إنشاء الرسوم المتحركة | Creating animations"], answer: 1 },
+            { q: "التنسيق الشرطي (Conditional Formatting) يغير | Conditional Formatting changes:", options: ["حجم الخط فقط | Font size only", "لون الخلية بناءً على قيمتها | Cell color based on value", "اسم الملف | File name", "نوع الطابعة | Printer type"], answer: 1 },
+            { q: "لفرز البيانات في Excel نستخدم | To sort data in Excel use:", options: ["Home > Font", "Data tab > Sort & Filter", "Insert > Chart", "Review > Comments"], answer: 1 },
+            { q: "في PowerPoint، الانتقالات (Transitions) هي | In PowerPoint, Transitions are:", options: ["حركات داخل الشريحة | Animations within slide", "حركات بين الشرائح | Animations between slides", "تغيير الخطوط | Font changes", "إضافة الصور | Adding images"], answer: 1 },
+            { q: "علامة التبويب Design في PowerPoint تستخدم لـ | Design tab in PowerPoint is used for:", options: ["إضافة فيديو | Adding video", "تطبيق السمات والألوان | Applying themes & colors", "كتابة النصوص | Writing text", "طباعة العرض | Printing presentation"], answer: 1 },
+            { q: "لحفظ عملك في Word نستخدم | To save work in Word use:", options: ["File > Open", "File > Save As", "Edit > Copy", "View > Zoom"], answer: 1 },
+            { q: "AutoFill في Excel يستخدم لـ | AutoFill in Excel is used for:", options: ["حذف البيانات | Deleting data", "متابعة السلاسل تلقائياً | Continuing series automatically", "تغيير الألوان | Changing colors", "طباعة الجدول | Printing table"], answer: 1 },
+            { q: "المعامل * في صيغة Excel يعني | The * operator in Excel formula means:", options: ["جمع | Addition", "طرح | Subtraction", "ضرب | Multiplication", "قسمة | Division"], answer: 2 },
+            { q: "لإنشاء قائمة مرقمة في Word نستخدم | To create numbered list in Word use:", options: ["Font formatting", "Bullets and Numbering", "Insert > Table", "Review > Spell Check"], answer: 1 },
+            { q: "شريط الحالة (Status Bar) في Word يظهر | Status Bar in Word shows:", options: ["القوائم الرئيسية | Main menus", "عدد الصفحات والكلمات | Page count & word count", "أدوات التنسيق | Formatting tools", "الصور المدمجة | Embedded images"], answer: 1 },
+            { q: "LAN تعني | LAN stands for:", options: ["Large Area Network", "Local Area Network", "Long Access Network", "Limited Application Network"], answer: 1 },
+            { q: "WAN يغطي | WAN covers:", options: ["غرفة واحدة | One room", "منطقة جغرافية واسعة | Large geographic area", "جهاز واحد | One device", "شبكة منزلية فقط | Home network only"], answer: 1 },
+            { q: "الإنترنت هو أكبر مثال على | The Internet is the largest example of:", options: ["LAN", "WAN", "PAN", "MAN"], answer: 1 },
+            { q: "محرك البحث Google يستخدم لـ | Google search engine is used for:", options: ["تحرير النصوص | Text editing", "البحث عن المعلومات على الويب | Searching web information", "تشغيل الألعاب | Gaming", "إدارة الملفات | File management"], answer: 1 },
+            { q: "للبحث عن عبارة دقيقة نستخدم | To search for exact phrase use:", options: ["علامات استفهام | Question marks", "علامات اقتباس \" \" | Quotation marks \" \"", "أقواس () | Parentheses ()", "نجوم * | Asterisks *"], answer: 1 },
+            { q: "HTTPS يعني أن الاتصال | HTTPS means connection is:", options: ["بطيء | Slow", "مشفر وآمن | Encrypted & secure", "مجاني | Free", "غير موثوق | Unreliable"], answer: 1 },
+            { q: "التصيد الاحتيالي (Phishing) هو | Phishing is:", options: ["نوع من الألعاب | A type of game", "محاولة احتيالية لسرقة البيانات | Fraudulent attempt to steal data", "برنامج مفيد | Useful software", "بروتوكول شبكة | Network protocol"], answer: 1 },
+            { q: "في البريد الإلكتروني، BCC تعني | In email, BCC stands for:", options: ["Basic Carbon Copy", "Blind Carbon Copy", "Business Communication Copy", "Binary Code Copy"], answer: 1 },
+            { q: "لإرفاق ملف في البريد نستخدم | To attach file in email use:", options: ["علامة @ | @ symbol", "أيقونة المشبك 📎 | Paperclip icon", "زر إرسال | Send button", "مربع الموضوع | Subject box"], answer: 1 },
+            { q: "Netiquette تعني | Netiquette means:", options: ["بروتوكول شبكة | Network protocol", "آداب السلوك على الإنترنت | Internet etiquette", "نوع من الفيروسات | Type of virus", "لغة برمجة | Programming language"], answer: 1 },
+            { q: "من آداب الإنترنت: تجنب | Internet etiquette: avoid", options: ["استخدام الأحرف الصغيرة | Using lowercase", "الكتابة بحروف كبيرة فقط (يبدو كصرخ) | ALL CAPS (looks like shouting)", "إضافة توقيع | Adding signature", "استخدام روابط | Using links"], answer: 1 },
+            { q: "Zoom و Microsoft Teams هما | Zoom & Microsoft Teams are:", options: ["محركات بحث | Search engines", "أدوات مؤتمرات فيديو | Video conferencing tools", "برامج مكافحة فيروسات | Anti-virus programs", "أنظمة تشغيل | Operating systems"], answer: 1 },
+            { q: "Google Drive يوفر مساحة مجانية | Google Drive free storage:", options: ["5 GB", "10 GB", "15 GB", "20 GB"], answer: 2 },
+            { q: "الحوسبة السحابية تعني | Cloud Computing means:", options: ["تخزين الملفات على القرص الصلب المحلي | Storing files on local hard drive", "تقديم خدمات الحوسبة عبر الإنترنت | Delivering computing services via internet", "استخدام الحواسيب القديمة | Using old computers", "البرمجة بدون إنترنت | Programming offline"], answer: 1 },
+            { q: "ميزة الحوسبة السحابية: | Cloud Computing benefit:", options: ["العمل من أي جهاز ومكان | Work from any device, anywhere", "الحاجة لاتصال دائم بالإنترنت فقط | Need constant internet only", "تقليل الأمان | Reduced security", "زيادة التكلفة | Increased cost"], answer: 0 },
+            { q: "OneDrive يتكامل بشكل أفضل مع | OneDrive integrates best with:", options: ["Android فقط | Android only", "Windows 10/11", "Linux فقط | Linux only", "iOS فقط | iOS only"], answer: 1 },
+            { q: "لمشاركة ملف على السحابة نستخدم | To share cloud file use:", options: ["زر الطباعة | Print button", "زر Share/مشاركة", "زر الحذف | Delete button", "زر التحديث | Refresh button"], answer: 1 },
+            { q: "Dropbox يتميز بـ | Dropbox is known for:", options: ["التكامل مع Office | Office integration", "المزامنة السريعة وعبر المنصات | Fast cross-platform syncing", "المساحة المجانية الكبيرة | Large free space", "الدعم الفني فقط | Support only"], answer: 1 },
+            { q: "Auto-Save في السحابة يعني | Auto-Save in cloud means:", options: ["الحفظ اليدوي فقط | Manual save only", "الحفظ التلقائي الفوري | Instant automatic saving", "عدم الحفظ | No saving", "الحفظ الأسبوعي | Weekly saving"], answer: 1 },
+            { q: "للتعاون على مستند Google نضغط | To collaborate on Google Doc click:", options: ["File > Download", "Share button (أعلى يمين) | Share button (top-right)", "Edit > Delete", "View > Print"], answer: 1 },
+            { q: "الجهاز الذي يقرأ العلامات المغناطيسية في البنوك هو | Device that reads magnetic marks in banks:", options: ["Magnetic Card Reader", "Barcode Reader", "OCR", "Scanner"], answer: 0 },
+            { q: "الأجهزة البيومترية تستخدم في | Biometric devices are used in:", options: ["الألعاب فقط | Gaming only", "المتاجر، الكليات، المحطات | Shops, colleges, stations", "الطابعات فقط | Printers only", "الشبكات فقط | Networks only"], answer: 1 },
+            { q: "Bluetooth يعتبر من | Bluetooth is:", options: ["جهاز إدخال سلكي | Wired input device", "تقنية اتصال لاسلكي | Wireless communication technology", "نظام تشغيل | Operating system", "لغة برمجة | Programming language"], answer: 1 },
+            { q: "عملية تحميل نظام التشغيل تسمى | Process of loading OS is called:", options: ["Booting", "Loading", "Starting", "Running"], answer: 0 },
+            { q: "الإقلاع البارد (Cold Boot) يعني | Cold Boot means:", options: ["إعادة التشغيل | Restart", "تشغيل الحاسوب من حالة الإيقاف | Power ON from off state", "إغلاق الحاسوب | Shutdown", "تحديث النظام | Update system"], answer: 1 },
+            { q: "الإقلاع الدافئ (Warm Boot) يتم بـ | Warm Boot is done by:", options: ["زر الطاقة | Power button", "زر RESET أو Ctrl+Alt+Del", "إغلاق الشاشة | Closing monitor", "فصل الكهرباء | Unplugging"], answer: 1 },
+            { q: "اللوحة الأم في الحاسوب تسمى | Main circuit board is called:", options: ["CPU Board", "Motherboard", "Memory Board", "Control Board"], answer: 1 },
+            { q: "البطارية CMOS في الحاسوب تستخدم لـ | CMOS Battery is used for:", options: ["تشغيل الحاسوب | Powering computer", "حفظ إعدادات BIOS | Saving BIOS settings", "تخزين البيانات | Storing data", "تبريد المعالج | Cooling CPU"], answer: 1 },
+            { q: "وحدة إمداد الطاقة تسمى | Power Supply Unit is called:", options: ["SMPS", "CPU", "RAM", "ROM"], answer: 0 },
+            { q: "فتحات التوسعة في اللوحة الأم تسمى | Expansion slots on motherboard are for:", options: ["الذاكرة فقط | Memory only", "بطاقات إضافية مثل الشبكة والرسوميات | Additional cards like network & graphics", "التخزين فقط | Storage only", "الطاقة فقط | Power only"], answer: 1 },
+            { q: "محرك الأقراص الثابتة عادةً هو | Hard drive is usually:", options: ["Drive A", "Drive B", "Drive C", "Drive D"], answer: 2 },
+            { q: "البايت (Byte) يتكون من | A byte consists of:", options: ["4 bits", "8 bits", "16 bits", "32 bits"], answer: 1 },
+            { q: "عند الحفظ بدون قرص مرن، يُحفظ الملف على | When saving without floppy, file is saved on:", options: ["RAM", "CD-ROM", "ROM", "Hard Drive"], answer: 3 },
+            { q: "الصور على الشاشة تتكون من | Pictures on screen are made of:", options: ["Pixels", "Layers", "Bits", "Packets"], answer: 0 },
+            { q: "الذاكرة المؤقتة تسمى | Temporary memory is called:", options: ["RAM", "CAD", "DOS", "ROM"], answer: 0 },
+            { q: "من وظائف المعالج الدقيقة | Microprocessor functions include:", options: ["Fetch, Decode, Execute", "Input, Output, Store", "Read, Write, Delete", "Open, Close, Save"], answer: 0 },
+            { q: "من أمثلة العتاد (Hardware) | Example of hardware:", options: ["Windows", "Mouse", "MS Office", "Photoshop"], answer: 1 },
+            { q: "تصحيح الأخطاء في النظام يسمى | Fixing errors in system is called:", options: ["Cleaning", "Debugging", "Decoding", "Formatting"], answer: 1 },
+            { q: "الميجابايت يساوي | Megabyte equals:", options: ["1,000 bytes", "1 million bytes", "1 billion bytes", "1 trillion bytes"], answer: 1 },
+            { q: "تهيئة القرص تعني | Formatting a disk means:", options: ["تثبيت نظام التشغيل | Installing OS", "إعداد أقسام لتخزين الملفات | Setting up sections for files", "تنظيف القرص | Cleaning disk", "حماية البيانات | Protecting data"], answer: 1 },
+            { q: "النظام الذي يربط الحواسيب معاً | System connecting computers:", options: ["Operating System", "Network", "Tape Drive", "Partnered Path"], answer: 1 },
+            { q: "PC تعني | PC stands for:", options: ["Programmable Console", "Personal Computer", "Powered Calculator", "Processing Contraption"], answer: 1 },
+            { q: "VDU تعني | VDU stands for:", options: ["Video Display Unit", "Visible Display Unit", "Visual Display Unit", "Video Diode Unit"], answer: 0 },
+            { q: "من متصفحات الويب الشهيرة | Popular web browsers:", options: ["Google Chrome, Firefox, Edge", "Word, Excel, PowerPoint", "Windows, Linux, Mac", "RAM, ROM, CPU"], answer: 0 },
+            { q: "للدخول إلى الويب تحتاج إلى | To access web you need:", options: ["Internet connection + ISP + Browser", "Only Internet Explorer", "Only Modem", "Nothing"], answer: 0 },
+            { q: "عنوان البريد الإلكتروني الصحيح | Correct email address:", options: ["http://vianet.com", "joesmart@billme.com", "D:\\EmailStandard", "Chaminade.org/teachers"], answer: 1 },
+            { q: "امتدادات ملفات الرسوميات | Graphics file extensions:", options: ["BMP and DOC", "JPEG and TXT", "BMP and GIF", "TXT and STK"], answer: 2 },
+            { q: "الوسيط الذي يخزن أكثر معلومات | Media storing most information:", options: ["Floppy Disk", "CD-ROM", "DVD", "Zip Drive"], answer: 2 }
+        ];
+
+        const quizContainer = document.getElementById('quizContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        let showAnswers = true;
+
+        function renderQuestions() {
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.innerHTML = `${index + 1}. ${q.q}`;
+                card.appendChild(qText);
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+
+                q.options.forEach((opt, optIndex) => {
+                    const label = document.createElement('label');
+                    label.className = 'option-label';
+                    
+                    // Add correct answer class
+                    if (optIndex === q.answer) {
+                        label.classList.add('correct-answer');
+                    }
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = `question${index}`;
+                    radio.value = optIndex;
+                    radio.onchange = () => updateProgress();
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optionsGrid.appendChild(label);
+                });
+
+                card.appendChild(optionsGrid);
+                quizContainer.appendChild(card);
+            });
+            updateProgress();
+        }
+
+        function toggleAnswers() {
+            const btn = document.getElementById('toggleAnswers');
+            const correctLabels = document.querySelectorAll('.correct-answer');
+            
+            showAnswers = !showAnswers;
+            
+            correctLabels.forEach(label => {
+                if (showAnswers) {
+                    label.classList.add('correct-answer');
+                } else {
+                    label.classList.remove('correct-answer');
+                }
+            });
+            
+            if (showAnswers) {
+                btn.classList.remove('hide');
+                btn.innerHTML = "✓ إظهار/إخفاء الإجابات | Show/Hide Answers";
+            } else {
+                btn.classList.add('hide');
+                btn.innerHTML = "✗ إخفاء الإجابات | Hide Answers";
+            }
+        }
+
+        function updateProgress() {
+            const total = questions.length;
+            const answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            const percentage = (answered / total) * 100;
+            progressFill.style.width = `${percentage}%`;
+            progressText.innerText = `${answered}/${total}`;
+        }
+
+        function calculateScore() {
+            let score = 0;
+            const total = questions.length;
+
+            questions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="question${index}"]:checked`);
+                const card = document.getElementById(`q-card-${index}`);
+                
+                if (selected && parseInt(selected.value) === q.answer) {
+                    score++;
+                    card.style.borderColor = '#00ff00';
+                    card.style.boxShadow = '0 0 15px rgba(0, 255, 0, 0.3)';
+                } else {
+                    card.style.borderColor = '#ff0000';
+                }
+            });
+
+            const modal = document.getElementById('scoreModal');
+            document.getElementById('finalScore').innerText = `${score} / ${total}`;
+            
+            const percentage = (score / total) * 100;
+            let msg = "";
+            if(percentage >= 90) msg = "Excellent! | ممتاز 🌟";
+            else if(percentage >= 75) msg = "Very Good | جيد جداً 👍";
+            else if(percentage >= 50) msg = "Good | جيد ✓";
+            else msg = "Needs Improvement | يحتاج تحسين 📚";
+            
+            document.getElementById('scoreMessage').innerText = msg;
+            modal.style.display = 'flex';
+            window.scrollTo(0, 0);
+        }
+
+        function closeModal() {
+            document.getElementById('scoreModal').style.display = 'none';
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
